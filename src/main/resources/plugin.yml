@@ -1,0 +1,33 @@
+name: BungeeEconomy
+version: '${project.version}'
+main: fr.iban.bungeeeconomy.BungeeEconomyPlugin
+api-version: 1.18
+authors: [ Iban ]
+description: Bungeecord economy plugin
+depend:
+  - Vault
+  - Core
+softdepend:
+  - QuickShop
+  - zAuctionHouseV3
+
+commands:
+  baltop:
+    description: show global balance top
+    aliases:
+      - balancetop
+      - moneytop
+  balance:
+    description: shows players balances
+    aliases:
+      - bal
+      - money
+  bungeeeconomy:
+    description: bungeeeconomy admin command
+    aliases:
+      - beco
+      - eco
+  pay:
+    description: allow to give money to other players
+  pricelimit:
+    description: manage price limits on quickshop and zAh

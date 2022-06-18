@@ -1,0 +1,6 @@
+#Baltop update interval in minutes
+baltop-update-interval: 5
+baltop-max-players: 50
+max-fraction-digits: 4
+currency-name: $
+starting-balance: 0.0
