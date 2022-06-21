@@ -12,7 +12,8 @@ public class SqlTables {
         createTable("CREATE TABLE IF NOT EXISTS bungeeecon_balances(" +
                 "   id INTEGER PRIMARY KEY AUTO_INCREMENT," +
                 "   uuid VARCHAR(36) UNIQUE," +
-                "   balance DOUBLE" +
+                "   balance DOUBLE," +
+                "   updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;" +
                 ");");
 
         createTable("CREATE TABLE IF NOT EXISTS bungeeecon_transactions(" +

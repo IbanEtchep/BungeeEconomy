@@ -26,6 +26,7 @@ public final class BungeeEconomyPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        saveDefaultConfig();
         SqlTables.createTables();
         SqlStorage sqlStorage = new SqlStorage(this);
         economy = new EconomyImpl(this, sqlStorage);

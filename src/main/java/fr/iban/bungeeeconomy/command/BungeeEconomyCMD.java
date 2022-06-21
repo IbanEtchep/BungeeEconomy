@@ -48,20 +48,20 @@ public class BungeeEconomyCMD implements CommandExecutor, TabCompleter {
                 switch (args[0].toLowerCase()) {
                     case "give" -> {
                         economy.depositPlayer(target, amount);
-                        sender.sendMessage("§a" + economy.format(amount) + " ont été donnés à " + target.getName() + ".");
+                        sender.sendMessage("§a" + economy.format(amount) + " §aont été donnés à " + target.getName() + ".");
 
-                        if (target.isOnline()) {
-                            target.getPlayer().sendMessage("§a" + economy.format(amount) + " ont été ajoutés à votre solde.");
+                        if (target.getPlayer() != null) {
+                            target.getPlayer().sendMessage("§a" + economy.format(amount) + " §aont été ajoutés à votre solde.");
                         }
                     }
                     case "take" -> {
                         EconomyResponse response = economy.withdrawPlayer(target, amount);
 
                         if (response.transactionSuccess()) {
-                            sender.sendMessage("§c" + economy.format(amount) + " ont été retirés à " + target.getName() + ".");
+                            sender.sendMessage("§c" + economy.format(amount) + " §cont été retirés à " + target.getName() + ".");
 
-                            if (target.isOnline()) {
-                                target.getPlayer().sendMessage("§c" + economy.format(amount) + " ont été retirés de votre solde.");
+                            if (target.getPlayer() != null) {
+                                target.getPlayer().sendMessage("§c" + economy.format(amount) + " §cont été retirés de votre solde.");
                             }
                         } else {
                             sender.sendMessage(response.errorMessage);
@@ -70,10 +70,10 @@ public class BungeeEconomyCMD implements CommandExecutor, TabCompleter {
                     case "set" -> {
                         economy.withdrawPlayer(target, economy.getBalance(target));
                         economy.depositPlayer(target, amount);
-                        sender.sendMessage("§cLe solde de " + target.getName() + " a été redéfini à " + economy.format(amount) + ".");
+                        sender.sendMessage("§cLe solde de " + target.getName() + " a été redéfini à " + economy.format(amount) + "§c.");
 
-                        if (target.isOnline()) {
-                            target.getPlayer().sendMessage("§cVotre solde a été redéfini à " + economy.format(amount) + ".");
+                        if (target.getPlayer() != null) {
+                            target.getPlayer().sendMessage("§cVotre solde a été redéfini à " + economy.format(amount) + "§c.");
                         }
                     }
 

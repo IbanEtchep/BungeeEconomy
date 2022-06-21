@@ -37,9 +37,9 @@ public class PayCommand implements CommandExecutor {
                         if (economy.has(player, amount)) {
                             economy.withdrawPlayer(player, amount);
                             economy.depositPlayer(target, amount);
-                            player.sendMessage("§aVous avez envoyé " + economy.format(amount) + " à " + target.getName());
+                            player.sendMessage("§aVous avez envoyé " + economy.format(amount) + " §aà " + target.getName());
                             if (target.getPlayer() != null) {
-                                target.getPlayer().sendMessage("§aVous avez reçu " + economy.format(amount) + " de " + player.getName());
+                                target.getPlayer().sendMessage("§aVous avez reçu " + economy.format(amount) + " §ade " + player.getName());
                             }
                         } else {
                             player.sendMessage("§cVous n'avez pas assez d'argent !");

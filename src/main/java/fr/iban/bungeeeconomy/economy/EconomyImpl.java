@@ -7,6 +7,7 @@ import fr.iban.bungeeeconomy.sql.SqlStorage;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 
 import java.text.DecimalFormat;
@@ -18,9 +19,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class EconomyImpl implements Economy {
 
-    private BungeeEconomyPlugin plugin;
+    private final BungeeEconomyPlugin plugin;
 
-    private SqlStorage sqlStorage;
+    private final SqlStorage sqlStorage;
     private Map<UUID, Double> balances = new ConcurrentHashMap<>();
     private Baltop baltop;
 
@@ -57,7 +58,7 @@ public class EconomyImpl implements Economy {
     @Override
     public String format(double amount) {
         DecimalFormat df = new DecimalFormat("#.##");
-        return df.format(amount) + currencyNameSingular();
+        return ChatColor.GOLD + df.format(amount) + currencyNameSingular() + ChatColor.RESET;
     }
 
     @Override
@@ -316,7 +317,7 @@ public class EconomyImpl implements Economy {
      */
     private void syncBalance(UUID uuid) {
         CoreBukkitPlugin core = CoreBukkitPlugin.getInstance();
-        core.getMessagingManager().sendMessage(plugin.SYNC_CHANNEL, uuid.toString());
+        core.getMessagingManager().sendMessageAsync(plugin.SYNC_CHANNEL, uuid.toString());
     }
 
     public void updateBalanceFromDb(UUID uuid) {
