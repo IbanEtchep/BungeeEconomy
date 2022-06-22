@@ -16,7 +16,7 @@ public class VaultHook {
 
     public void hook() {
         provider = plugin.getEconomy();
-        Bukkit.getServicesManager().register(Economy.class, this.provider, this.plugin, ServicePriority.Normal);
+        Bukkit.getServicesManager().register(Economy.class, this.provider, this.plugin, ServicePriority.High);
         plugin.getLogger().info("VaultAPI hooked into " + plugin.getName());
     }
 

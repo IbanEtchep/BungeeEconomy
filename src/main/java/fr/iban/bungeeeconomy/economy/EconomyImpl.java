@@ -9,21 +9,26 @@ import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.text.DecimalFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class EconomyImpl implements Economy {
 
     private final BungeeEconomyPlugin plugin;
 
     private final SqlStorage sqlStorage;
-    private Map<UUID, Double> balances = new ConcurrentHashMap<>();
+    private Map<UUID, Double> balances = new HashMap<>();
     private Baltop baltop;
+
+    private final LinkedBlockingQueue<Runnable> queue = new LinkedBlockingQueue<>();
+    private BukkitTask bukkitTask;
 
     public EconomyImpl(BungeeEconomyPlugin plugin, SqlStorage sqlStorage) {
         this.plugin = plugin;
@@ -154,11 +159,11 @@ public class EconomyImpl implements Economy {
         UUID uuid = player.getUniqueId();
         balances.put(uuid, getBalance(player) - amount);
 
-        CompletableFuture
-                .runAsync(() -> sqlStorage.updateBalance(uuid, getBalance(player)))
-                .thenRun(() -> syncBalance(uuid));
-
-        CompletableFuture.runAsync(() -> sqlStorage.addTransactionLog(uuid, (amount*-1) ));
+        runAsyncQueued(() -> {
+            sqlStorage.updateBalance(uuid, getBalance(player));
+            syncBalance(uuid);
+            sqlStorage.addTransactionLog(uuid, (amount * -1));
+        });
 
         return new EconomyResponse(0, getBalance(player), EconomyResponse.ResponseType.SUCCESS, null);
     }
@@ -196,11 +201,12 @@ public class EconomyImpl implements Economy {
         UUID uuid = player.getUniqueId();
         balances.put(uuid, getBalance(player) + amount);
 
-        CompletableFuture
-                .runAsync(() -> sqlStorage.updateBalance(uuid, getBalance(player)))
-                .thenRun(() -> syncBalance(uuid));
+        runAsyncQueued(() -> {
+            sqlStorage.updateBalance(uuid, getBalance(player));
+            syncBalance(uuid);
+            sqlStorage.addTransactionLog(uuid, amount);
+        });
 
-        CompletableFuture.runAsync(() -> sqlStorage.addTransactionLog(uuid, amount));
 
         return new EconomyResponse(0, getBalance(player), EconomyResponse.ResponseType.SUCCESS, null);
     }
@@ -317,7 +323,7 @@ public class EconomyImpl implements Economy {
      */
     private void syncBalance(UUID uuid) {
         CoreBukkitPlugin core = CoreBukkitPlugin.getInstance();
-        core.getMessagingManager().sendMessageAsync(plugin.SYNC_CHANNEL, uuid.toString());
+        core.getMessagingManager().sendMessage(plugin.SYNC_CHANNEL, uuid.toString());
     }
 
     public void updateBalanceFromDb(UUID uuid) {
@@ -325,5 +331,16 @@ public class EconomyImpl implements Economy {
             double balance = sqlStorage.getBalance(uuid);
             balances.put(uuid, balance);
         });
+    }
+
+    public void runAsyncQueued(Runnable runnable) {
+        queue.add(runnable);
+        if (bukkitTask == null || bukkitTask.isCancelled()) {
+            bukkitTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
+                while (!queue.isEmpty()) {
+                    queue.poll().run();
+                }
+            }, 0L, 1L);
+        }
     }
 }

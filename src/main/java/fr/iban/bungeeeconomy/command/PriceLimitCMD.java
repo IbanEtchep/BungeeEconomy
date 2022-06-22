@@ -79,6 +79,7 @@ public class PriceLimitCMD implements CommandExecutor, TabCompleter {
                     default -> {
                         sender.sendMessage("/pricelimit edit enchantName/materialName min max");
                         sender.sendMessage("mettre 0 et 0 pour retirer la limite. 0 = pas de limite");
+                        sender.sendMessage("/pricelimit list");
                         sender.sendMessage("/pricelimit reload");
 
                     }
