@@ -9,7 +9,6 @@ import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
@@ -17,7 +16,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class EconomyImpl implements Economy {
 
@@ -26,9 +26,8 @@ public class EconomyImpl implements Economy {
     private final SqlStorage sqlStorage;
     private Map<UUID, Double> balances = new HashMap<>();
     private Baltop baltop;
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
-    private final LinkedBlockingQueue<Runnable> queue = new LinkedBlockingQueue<>();
-    private BukkitTask bukkitTask;
 
     public EconomyImpl(BungeeEconomyPlugin plugin, SqlStorage sqlStorage) {
         this.plugin = plugin;
@@ -334,13 +333,10 @@ public class EconomyImpl implements Economy {
     }
 
     public void runAsyncQueued(Runnable runnable) {
-        queue.add(runnable);
-        if (bukkitTask == null || bukkitTask.isCancelled()) {
-            bukkitTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
-                while (!queue.isEmpty()) {
-                    queue.poll().run();
-                }
-            }, 0L, 1L);
-        }
+        executor.execute(runnable);
+    }
+
+    public ExecutorService getExecutor() {
+        return executor;
     }
 }

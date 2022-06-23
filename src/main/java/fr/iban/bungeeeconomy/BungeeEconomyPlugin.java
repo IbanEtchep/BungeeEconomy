@@ -57,6 +57,7 @@ public final class BungeeEconomyPlugin extends JavaPlugin {
     @Override
     public void onDisable() {
         vaultHook.unhook();
+        economy.getExecutor().shutdown();
     }
 
     private void registerListeners(Listener... listeners) {
