@@ -11,10 +11,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 
 import java.text.DecimalFormat;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -61,8 +60,14 @@ public class EconomyImpl implements Economy {
 
     @Override
     public String format(double amount) {
-        DecimalFormat df = new DecimalFormat("#.##");
-        return ChatColor.GOLD + df.format(amount) + currencyNameSingular() + ChatColor.RESET;
+        Locale locale = new Locale("fr", "FR");
+        NumberFormat numberFormat = NumberFormat.getNumberInstance(locale);
+        numberFormat.setMaximumFractionDigits(2);
+        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
+        dfs.setGroupingSeparator(' ');
+        dfs.setDecimalSeparator(',');
+        ((DecimalFormat) numberFormat).setDecimalFormatSymbols(dfs);
+        return ChatColor.GOLD + numberFormat.format(amount) + currencyNameSingular() + ChatColor.RESET;
     }
 
     @Override
