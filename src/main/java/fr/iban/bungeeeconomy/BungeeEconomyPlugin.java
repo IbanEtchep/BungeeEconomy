@@ -79,7 +79,4 @@ public final class BungeeEconomyPlugin extends JavaPlugin {
         return priceLimitManager;
     }
 
-    public QuickShopAPI getQuickShopAPI() {
-        return quickShopAPI;
-    }
 }
