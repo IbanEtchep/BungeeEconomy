@@ -107,12 +107,12 @@ public class PriceLimitManager {
 
     public String getLimitMessage(PriceLimit limit) {
         if (limit.getMin() == 0 && limit.getMax() > 0) {
-            return "Le prix de cet objet ne doit pas dépasser " + plugin.getEconomy().format(limit.getMax()) + ".";
+            return "Le prix unitaire de cet objet ne doit pas dépasser " + plugin.getEconomy().format(limit.getMax()) + ".";
         }
         if (limit.getMin() > 0 && limit.getMax() == 0) {
-            return "Le prix de cet objet doit être d'au moins " + plugin.getEconomy().format(limit.getMin()) + ".";
+            return "Le prix unitaire de cet objet doit être d'au moins " + plugin.getEconomy().format(limit.getMin()) + ".";
         }
-        return "Le prix de cet objet doit être d'au moins " + plugin.getEconomy().format(limit.getMin()) + " et ne doit pas dépasser " + plugin.getEconomy().format(limit.getMax()) + ".";
+        return "Le prix unitaire de cet objet doit être d'au moins " + plugin.getEconomy().format(limit.getMin()) + " et ne doit pas dépasser " + plugin.getEconomy().format(limit.getMax()) + ".";
     }
 
     public Map<Enchantment, PriceLimit> getEnchantsPriceLimits() {
