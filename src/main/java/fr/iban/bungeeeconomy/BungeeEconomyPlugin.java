@@ -9,6 +9,7 @@ import fr.iban.bungeeeconomy.listener.ZAhListeners;
 import fr.iban.bungeeeconomy.pricelimit.PriceLimitManager;
 import fr.iban.bungeeeconomy.sql.SqlStorage;
 import fr.iban.bungeeeconomy.sql.SqlTables;
+import fr.iban.bungeeeconomy.util.EconPlaceHolders;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
@@ -45,6 +46,9 @@ public final class BungeeEconomyPlugin extends JavaPlugin {
         Plugin quickshopPlugin = Bukkit.getPluginManager().getPlugin("QuickShop");
         if(quickshopPlugin != null && quickshopPlugin.isEnabled()){
             quickShopAPI = (QuickShopAPI)quickshopPlugin;
+        }
+        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            new EconPlaceHolders(this).register();
         }
 
         registerListeners(
