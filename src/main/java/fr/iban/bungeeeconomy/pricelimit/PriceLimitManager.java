@@ -2,6 +2,7 @@ package fr.iban.bungeeeconomy.pricelimit;
 
 import fr.iban.bungeeeconomy.BungeeEconomyPlugin;
 import fr.iban.bungeeeconomy.sql.SqlStorage;
+import fr.iban.bungeeeconomy.util.SerializationUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -21,6 +22,7 @@ public class PriceLimitManager {
     private SqlStorage sqlStorage;
     private BungeeEconomyPlugin plugin;
     private final Map<Material, PriceLimit> materialsPriceLimits = new HashMap<>();
+    private final Map<Material, PriceLimit> itemStackPriceLimits = new HashMap<>();
     private final Map<Enchantment, PriceLimit> enchantsPriceLimits = new HashMap<>();
 
     public PriceLimitManager(BungeeEconomyPlugin plugin, SqlStorage sqlStorage) {
@@ -36,18 +38,21 @@ public class PriceLimitManager {
             Map<String, PriceLimit> limits = sqlStorage.getPriceLimits();
 
             for (Map.Entry<String, PriceLimit> entry : limits.entrySet()) {
+                String key = entry.getKey();
                 PriceLimit priceLimit = entry.getValue();
                 try {
-                    Material material = Material.valueOf(entry.getKey());
+                    Material material = Material.valueOf(key);
                     materialsPriceLimits.put(material, priceLimit);
                     continue;
                 } catch (IllegalArgumentException ignored) {
                 }
 
-                Enchantment enchantment = Enchantment.getByKey(NamespacedKey.minecraft(entry.getKey()));
+                Enchantment enchantment = Enchantment.getByKey(NamespacedKey.minecraft(key));
                 if (enchantment != null) {
                     enchantsPriceLimits.put(enchantment, priceLimit);
+                    continue;
                 }
+
             }
 
             plugin.getLogger().info(materialsPriceLimits.size() + " material price loaded.");
@@ -58,8 +63,7 @@ public class PriceLimitManager {
     public PriceLimit getPriceLimit(ItemStack itemStack) {
         PriceLimit priceLimit = new PriceLimit(0, 0);
 
-        if (itemStack.getItemMeta() instanceof EnchantmentStorageMeta) {
-            EnchantmentStorageMeta enchantmentStorageMeta = (EnchantmentStorageMeta) itemStack.getItemMeta();
+        if (itemStack.getItemMeta() instanceof EnchantmentStorageMeta enchantmentStorageMeta) {
             for (Map.Entry<Enchantment, PriceLimit> entry : enchantsPriceLimits.entrySet()) {
                 if(enchantmentStorageMeta.getStoredEnchants().containsKey(entry.getKey())) {
                     PriceLimit entryLimit = entry.getValue();
@@ -131,6 +135,9 @@ public class PriceLimitManager {
         for (Enchantment enchantment : Enchantment.values()) {
             validKeys.add(enchantment.getKey().getKey());
         }
+        validKeys.add("itemInHand");
         return validKeys;
     }
+
+
 }

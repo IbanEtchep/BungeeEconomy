@@ -3,12 +3,15 @@ package fr.iban.bungeeeconomy.command;
 import fr.iban.bungeeeconomy.BungeeEconomyPlugin;
 import fr.iban.bungeeeconomy.pricelimit.PriceLimit;
 import fr.iban.bungeeeconomy.pricelimit.PriceLimitManager;
+import fr.iban.bungeeeconomy.util.SerializationUtils;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -69,6 +72,15 @@ public class PriceLimitCMD implements CommandExecutor, TabCompleter {
                             String key = args[1];
 
                             if(priceLimitManager.getValidKeys().contains(key)) {
+//                                if(sender instanceof Player player) {
+//                                    if(key.equalsIgnoreCase("itemInHand")) {
+//                                        ItemStack itemStack = player.getInventory().getItemInMainHand();
+//                                        if(itemStack.getType() == Material.AIR) {
+//                                            return false;
+//                                        }
+//                                        key = SerializationUtils.toBase64(itemStack);
+//                                    }
+//                                }
                                 priceLimitManager.setPriceLimit(key, min, max);
                                 sender.sendMessage("§aLimite de prix ajoutée.");
                             }
