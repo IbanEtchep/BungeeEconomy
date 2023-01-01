@@ -23,9 +23,7 @@ public class PayCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
 
-        if (sender instanceof Player) {
-
-            Player player = (Player) sender;
+        if (sender instanceof Player player) {
 
             if (args.length == 2) {
                 OfflinePlayer target = Bukkit.getOfflinePlayerIfCached(args[0]);
@@ -34,7 +32,7 @@ public class PayCommand implements CommandExecutor {
                     try {
                         double amount = Double.parseDouble(args[1]);
 
-                        if (economy.has(player, amount)) {
+                        if (amount > 0 && economy.has(player, amount)) {
                             economy.withdrawPlayer(player, amount);
                             economy.depositPlayer(target, amount);
                             player.sendMessage("§aVous avez envoyé " + economy.format(amount) + " §aà " + target.getName());
