@@ -1,5 +1,6 @@
 package fr.iban.bungeeeconomy;
 
+import fr.iban.bukkitcore.CoreBukkitPlugin;
 import fr.iban.bungeeeconomy.command.*;
 import fr.iban.bungeeeconomy.economy.EconomyImpl;
 import fr.iban.bungeeeconomy.economy.VaultHook;
@@ -16,6 +17,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.maxgamer.quickshop.api.QuickShopAPI;
+import revxrsal.commands.bukkit.BukkitCommandHandler;
 
 public final class BungeeEconomyPlugin extends JavaPlugin {
 
@@ -37,7 +39,6 @@ public final class BungeeEconomyPlugin extends JavaPlugin {
         this.priceLimitManager = new PriceLimitManager(this, sqlStorage);
 
         getCommand("balance").setExecutor(new BalanceCMD(this));
-        getCommand("baltop").setExecutor(new BaltopCMD(this));
         getCommand("bungeeeconomy").setExecutor(new BungeeEconomyCMD(this));
         getCommand("pay").setExecutor(new PayCommand(this));
         getCommand("pricelimit").setExecutor(new PriceLimitCMD(this));
@@ -56,6 +57,8 @@ public final class BungeeEconomyPlugin extends JavaPlugin {
                 new QuickShopListeners(this),
                 new BalanceSyncListener(this)
         );
+
+        registerCommands();
     }
 
     @Override
@@ -72,6 +75,14 @@ public final class BungeeEconomyPlugin extends JavaPlugin {
             pm.registerEvents(listener, this);
         }
 
+    }
+
+    private void registerCommands() {
+        BukkitCommandHandler commandHandler = BukkitCommandHandler.create(this);
+        commandHandler.accept(CoreBukkitPlugin.getInstance().getCommandHandlerVisitor());
+
+        commandHandler.register(new BaltopCMD(this));
+        commandHandler.registerBrigadier();
     }
 
 

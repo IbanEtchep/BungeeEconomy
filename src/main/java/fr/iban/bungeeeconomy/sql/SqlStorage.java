@@ -1,5 +1,6 @@
 package fr.iban.bungeeeconomy.sql;
 
+import fr.iban.bukkitcore.CoreBukkitPlugin;
 import fr.iban.bungeeeconomy.BungeeEconomyPlugin;
 import fr.iban.bungeeeconomy.baltop.Baltop;
 import fr.iban.bungeeeconomy.baltop.BaltopPlayer;
@@ -24,8 +25,8 @@ public class SqlStorage {
     bungeeecon_transactions(#_player_id_, amount, createdAt)
 
      */
-    private BungeeEconomyPlugin plugin;
-    private DataSource ds = DbAccess.getDataSource();
+    private final BungeeEconomyPlugin plugin;
+    private final DataSource ds = DbAccess.getDataSource();
 
     public SqlStorage(BungeeEconomyPlugin plugin) {
         this.plugin = plugin;
@@ -95,8 +96,8 @@ public class SqlStorage {
                 while (rs.next()) {
                     UUID uuid = UUID.fromString(rs.getString("uuid"));
                     double balance = rs.getDouble("balance");
-                    OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
-                    baltopPlayerList.add(new BaltopPlayer(offlinePlayer.getName(), balance));
+                    String name = CoreBukkitPlugin.getInstance().getPlayerManager().getName(uuid);
+                    baltopPlayerList.add(new BaltopPlayer(name, balance));
                 }
             }
         } catch (SQLException e) {

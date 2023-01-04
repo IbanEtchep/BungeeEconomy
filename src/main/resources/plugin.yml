@@ -13,11 +13,6 @@ softdepend:
   - PlaceholderAPI
 
 commands:
-  baltop:
-    description: show global balance top
-    aliases:
-      - balancetop
-      - moneytop
   balance:
     description: shows players balances
     aliases:

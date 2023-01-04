@@ -2,70 +2,54 @@ package fr.iban.bungeeeconomy.command;
 
 import fr.iban.bungeeeconomy.baltop.BaltopPlayer;
 import fr.iban.bungeeeconomy.BungeeEconomyPlugin;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
+import revxrsal.commands.annotation.*;
+import revxrsal.commands.command.CommandActor;
 
 import java.text.SimpleDateFormat;
 
-public class BaltopCMD implements CommandExecutor {
+public class BaltopCMD {
 
-    private BungeeEconomyPlugin plugin;
+    private final BungeeEconomyPlugin plugin;
 
     public BaltopCMD(BungeeEconomyPlugin plugin) {
         this.plugin = plugin;
     }
 
-    @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    @Command({"baltop", "balancetop", "moneytop"})
+    public void baltop(CommandActor sender, @Default("1") @Range(min = 1) @Named("page") int selectedPage) {
 
         plugin.getEconomy().getBaltop().thenAccept(baltop -> {
-            int page = 1;
             int maxpages = (int) Math.ceil(baltop.getBaltopPlayers().size() / 10D);
 
-            if (args.length == 1) {
-                try {
-                    page = Integer.parseInt(args[0]);
-                    if (page > maxpages) {
-                        sender.sendMessage("§cLe classement va jusqu'à la page " + maxpages);
-                        return;
-                    }
-                } catch (NumberFormatException e) {
-                    sender.sendMessage("§cLa page doit être un nombre !");
-                }
+            if (selectedPage > maxpages) {
+                sender.reply("§cLe classement va jusqu'à la page " + maxpages);
+                return;
             }
 
-            int startPos = (page - 1) * 10;
+            int startPos = (selectedPage - 1) * 10;
             int endPos = startPos + 10;
 
-            sender.sendMessage(getCentered("§6§lClassement d'argent (§f§l" + page + "§6§l/§f§l " + maxpages + "§6§l)", 54));
+            sender.reply(getCentered("§6§lClassement d'argent (§f§l" + selectedPage + "§6§l/§f§l " + maxpages + "§6§l)"));
             for (int i = startPos; i < endPos && i < baltop.getBaltopPlayers().size(); i++) {
                 BaltopPlayer baltopPlayer = baltop.getBaltopPlayers().get(i);
-                sender.sendMessage("§6§l" + (i+1) + " §f§l " + baltopPlayer.getName() + " §e - §f" + plugin.getEconomy().format(baltopPlayer.getBalance()));
+                sender.reply("§6§l" + (i + 1) + " §f§l " + baltopPlayer.getName() + " §e - §f" + plugin.getEconomy().format(baltopPlayer.getBalance()));
             }
-            sender.sendMessage("§7Dernière mise à jour à " + new SimpleDateFormat("HH:mm").format(baltop.getUpdatedAt()));
-            sender.sendMessage(getLine(40));
+            sender.reply("§7Dernière mise à jour à " + new SimpleDateFormat("HH:mm").format(baltop.getUpdatedAt()));
+            sender.reply(getLine());
 
         }).exceptionally(throwable -> {
             throwable.printStackTrace();
             return null;
         });
-
-        return false;
     }
 
-    private String getLine(int length) {
-        StringBuilder sb = new StringBuilder("§6§m");
-        for (int i = 0; i < length; i++) {
-            sb.append("-");
-        }
-        return sb.toString();
+    private String getLine() {
+        return "§6§m" + "-".repeat(40);
     }
 
-    private String getCentered(String string, int lineLength) {
+    private String getCentered(String string) {
         StringBuilder sb = new StringBuilder("§6§m");
-        int line = (lineLength - string.length()) / 2 + 2;
+        int line = (54 - string.length()) / 2 + 2;
         sb.append("-".repeat(Math.max(0, line)));
         sb.append("§f ").append(string).append(" ");
         sb.append("§6§m");
