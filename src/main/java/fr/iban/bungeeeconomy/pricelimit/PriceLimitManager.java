@@ -22,7 +22,6 @@ public class PriceLimitManager {
     private SqlStorage sqlStorage;
     private BungeeEconomyPlugin plugin;
     private final Map<Material, PriceLimit> materialsPriceLimits = new HashMap<>();
-    private final Map<Material, PriceLimit> itemStackPriceLimits = new HashMap<>();
     private final Map<Enchantment, PriceLimit> enchantsPriceLimits = new HashMap<>();
 
     public PriceLimitManager(BungeeEconomyPlugin plugin, SqlStorage sqlStorage) {

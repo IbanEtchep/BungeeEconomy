@@ -32,9 +32,15 @@ public class EconomyImpl implements Economy {
         this.plugin = plugin;
         this.sqlStorage = sqlStorage;
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            long start = System.currentTimeMillis();
-            balances = sqlStorage.getAllBalances();
-            plugin.getLogger().info(balances.size() + " users balances loaded in " + (System.currentTimeMillis() - start) + "ms.");
+            try {
+                long start = System.currentTimeMillis();
+                balances = sqlStorage.getAllBalances();
+                plugin.getLogger().info(balances.size() + " users balances loaded in " + (System.currentTimeMillis() - start) + "ms.");
+            }catch (Exception e) {
+                plugin.getLogger().info("Error while loading balances.");
+                plugin.unHookVault();
+                e.printStackTrace();
+            }
         });
     }
 
