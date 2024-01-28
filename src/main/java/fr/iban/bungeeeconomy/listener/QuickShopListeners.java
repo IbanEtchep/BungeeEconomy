@@ -7,8 +7,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.maxgamer.quickshop.api.event.ShopCreateEvent;
+import org.maxgamer.quickshop.api.event.ShopItemChangeEvent;
 import org.maxgamer.quickshop.api.event.ShopLoadEvent;
 import org.maxgamer.quickshop.api.event.ShopPriceChangeEvent;
 import org.maxgamer.quickshop.api.shop.Shop;
@@ -31,6 +33,20 @@ public class QuickShopListeners implements Listener {
             if (creator != null) {
                 creator.sendMessage(priceLimitManager.getLimitMessage(priceLimit));
             }
+        }
+    }
+
+    @EventHandler
+    public void onShopItemChange(ShopItemChangeEvent e) {
+        Shop shop = e.getShop();
+        ItemStack newItem = e.getNewItem();
+        PriceLimit priceLimit = priceLimitManager.getPriceLimit(newItem);
+        if (!priceLimit.isInLimits(shop.getPrice())) {
+            Player creator = Bukkit.getPlayer(e.getShop().getOwner());
+            if (creator != null) {
+                creator.sendMessage(priceLimitManager.getLimitMessage(priceLimit));
+            }
+            shop.setPrice(priceLimit.getMin());
         }
     }
 
