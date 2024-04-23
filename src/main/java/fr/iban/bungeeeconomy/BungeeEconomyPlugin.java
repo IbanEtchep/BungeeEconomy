@@ -1,5 +1,6 @@
 package fr.iban.bungeeeconomy;
 
+import com.ghostchu.quickshop.api.QuickShopAPI;
 import fr.iban.bukkitcore.CoreBukkitPlugin;
 import fr.iban.bungeeeconomy.command.*;
 import fr.iban.bungeeeconomy.economy.EconomyImpl;
@@ -16,7 +17,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.maxgamer.quickshop.api.QuickShopAPI;
 import revxrsal.commands.bukkit.BukkitCommandHandler;
 
 public final class BungeeEconomyPlugin extends JavaPlugin {
@@ -45,10 +45,10 @@ public final class BungeeEconomyPlugin extends JavaPlugin {
         getCommand("pricelimit").setTabCompleter(new PriceLimitCMD(this));
 
         Plugin quickshopPlugin = Bukkit.getPluginManager().getPlugin("QuickShop");
-        if(quickshopPlugin != null && quickshopPlugin.isEnabled()){
-            quickShopAPI = (QuickShopAPI)quickshopPlugin;
+        if (quickshopPlugin != null && quickshopPlugin.isEnabled()) {
+            quickShopAPI = (QuickShopAPI) quickshopPlugin;
         }
-        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new EconPlaceHolders(this).register();
         }
 

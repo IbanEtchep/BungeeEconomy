@@ -1,5 +1,10 @@
 package fr.iban.bungeeeconomy.listener;
 
+import com.ghostchu.quickshop.api.event.ShopCreateEvent;
+import com.ghostchu.quickshop.api.event.ShopItemChangeEvent;
+import com.ghostchu.quickshop.api.event.ShopLoadEvent;
+import com.ghostchu.quickshop.api.event.ShopPriceChangeEvent;
+import com.ghostchu.quickshop.api.shop.Shop;
 import fr.iban.bungeeeconomy.BungeeEconomyPlugin;
 import fr.iban.bungeeeconomy.pricelimit.PriceLimit;
 import fr.iban.bungeeeconomy.pricelimit.PriceLimitManager;
@@ -9,11 +14,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.maxgamer.quickshop.api.event.ShopCreateEvent;
-import org.maxgamer.quickshop.api.event.ShopItemChangeEvent;
-import org.maxgamer.quickshop.api.event.ShopLoadEvent;
-import org.maxgamer.quickshop.api.event.ShopPriceChangeEvent;
-import org.maxgamer.quickshop.api.shop.Shop;
 
 public class QuickShopListeners implements Listener {
 
@@ -28,8 +28,8 @@ public class QuickShopListeners implements Listener {
         Shop shop = e.getShop();
         PriceLimit priceLimit = priceLimitManager.getPriceLimit(shop.getItem());
         if (!priceLimit.isInLimits(shop.getPrice())) {
-            e.setCancelled(true);
-            Player creator = Bukkit.getPlayer(e.getCreator());
+            e.setCancelled(true, "§cLe prix de cet item est en dehors des limites autorisées.");
+            Player creator = Bukkit.getPlayer(e.getCreator().getUniqueId());
             if (creator != null) {
                 creator.sendMessage(priceLimitManager.getLimitMessage(priceLimit));
             }
@@ -42,7 +42,7 @@ public class QuickShopListeners implements Listener {
         ItemStack newItem = e.getNewItem();
         PriceLimit priceLimit = priceLimitManager.getPriceLimit(newItem);
         if (!priceLimit.isInLimits(shop.getPrice())) {
-            Player creator = Bukkit.getPlayer(e.getShop().getOwner());
+            Player creator = Bukkit.getPlayer(e.getShop().getOwner().getUniqueId());
             if (creator != null) {
                 creator.sendMessage(priceLimitManager.getLimitMessage(priceLimit));
             }
@@ -55,8 +55,8 @@ public class QuickShopListeners implements Listener {
         Shop shop = e.getShop();
         PriceLimit priceLimit = priceLimitManager.getPriceLimit(shop.getItem());
         if (!priceLimit.isInLimits(e.getNewPrice())) {
-            e.setCancelled(true);
-            Player creator = Bukkit.getPlayer(e.getShop().getOwner());
+            e.setCancelled(true, "§cLe prix de cet item est en dehors des limites autorisées.");
+            Player creator = Bukkit.getPlayer(e.getShop().getOwner().getUniqueId());
             if (creator != null) {
                 creator.sendMessage(priceLimitManager.getLimitMessage(priceLimit));
             }

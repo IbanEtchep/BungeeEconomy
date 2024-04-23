@@ -5,25 +5,25 @@ api-version: 1.18
 authors: [ Iban ]
 description: Bungeecord economy plugin
 depend:
-  - Vault
-  - Core
+    - Vault
+    - Core
 softdepend:
-  - QuickShop
-  - zAuctionHouseV3
-  - PlaceholderAPI
+    - QuickShop-Hikari
+    - zAuctionHouseV3
+    - PlaceholderAPI
 
 commands:
-  balance:
-    description: shows players balances
-    aliases:
-      - bal
-      - money
-  bungeeeconomy:
-    description: bungeeeconomy admin command
-    aliases:
-      - beco
-      - eco
-  pay:
-    description: allow to give money to other players
-  pricelimit:
-    description: manage price limits on quickshop and zAh
+    balance:
+        description: shows players balances
+        aliases:
+            - bal
+            - money
+    bungeeeconomy:
+        description: bungeeeconomy admin command
+        aliases:
+            - beco
+            - eco
+    pay:
+        description: allow to give money to other players
+    pricelimit:
+        description: manage price limits on quickshop and zAh
