@@ -29,4 +29,9 @@ public class PriceLimit {
     public boolean isInLimits(double price) {
         return (min == 0 || price >= min) && (max == 0 || price <= max);
     }
+
+    public boolean isInLimits(double price, int amount) {
+        price = price/amount;
+        return isInLimits(price);
+    }
 }

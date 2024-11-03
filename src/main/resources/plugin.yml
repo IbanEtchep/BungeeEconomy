@@ -11,6 +11,7 @@ softdepend:
     - QuickShop-Hikari
     - zAuctionHouseV3
     - PlaceholderAPI
+    - AxAuctions
 
 commands:
     balance:

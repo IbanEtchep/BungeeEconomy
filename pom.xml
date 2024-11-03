@@ -74,6 +74,10 @@
             <id>placeholderapi</id>
             <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
+        <repository>
+            <id>Artillex-Studios</id>
+            <url>https://repo.artillex-studios.com/releases/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -184,7 +188,7 @@
             <groupId>org.maxgamer</groupId>
             <artifactId>QuickShop</artifactId>
             <version>5.1.2.5</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>
