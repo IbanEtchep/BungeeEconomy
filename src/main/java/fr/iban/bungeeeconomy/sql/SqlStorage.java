@@ -96,7 +96,7 @@ public class SqlStorage {
                 while (rs.next()) {
                     UUID uuid = UUID.fromString(rs.getString("uuid"));
                     double balance = rs.getDouble("balance");
-                    String name = CoreBukkitPlugin.getInstance().getPlayerManager().getName(uuid);
+                    String name = CoreBukkitPlugin.getInstance().getPlayerManager().getOfflinePlayer(uuid).getName();
                     baltopPlayerList.add(new BaltopPlayer(name, balance));
                 }
             }

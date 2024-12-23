@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>fr.iban</groupId>
+    <groupId>com.github.IbanEtchep</groupId>
     <artifactId>BungeeEconomy</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <packaging>jar</packaging>
 
     <name>BungeeEconomy</name>
@@ -74,10 +74,6 @@
             <id>placeholderapi</id>
             <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
-        <repository>
-            <id>Artillex-Studios</id>
-            <url>https://repo.artillex-studios.com/releases/</url>
-        </repository>
     </repositories>
 
     <dependencies>
@@ -94,9 +90,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>fr.iban</groupId>
-            <artifactId>CorePaper</artifactId>
-            <version>1.0</version>
+            <groupId>com.github.IbanEtchep.MSCore</groupId>
+            <artifactId>core-paper</artifactId>
+            <version>1.1.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

@@ -1,6 +1,7 @@
 package fr.iban.bungeeeconomy;
 
 import fr.iban.bukkitcore.CoreBukkitPlugin;
+import fr.iban.bukkitcore.commands.CoreCommandHandlerVisitor;
 import fr.iban.bungeeeconomy.command.*;
 import fr.iban.bungeeeconomy.economy.EconomyImpl;
 import fr.iban.bungeeeconomy.economy.VaultHook;
@@ -16,7 +17,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import revxrsal.commands.bukkit.BukkitCommandHandler;
+import revxrsal.commands.Lamp;
+import revxrsal.commands.bukkit.BukkitLamp;
+import revxrsal.commands.bukkit.actor.BukkitCommandActor;
 
 public final class BungeeEconomyPlugin extends JavaPlugin {
 
@@ -87,11 +90,11 @@ public final class BungeeEconomyPlugin extends JavaPlugin {
     }
 
     private void registerCommands() {
-        BukkitCommandHandler commandHandler = BukkitCommandHandler.create(this);
-        commandHandler.accept(CoreBukkitPlugin.getInstance().getCommandHandlerVisitor());
+        Lamp<BukkitCommandActor> lamp =  BukkitLamp.builder(this)
+                .accept(new CoreCommandHandlerVisitor(CoreBukkitPlugin.getInstance()).visitor())
+                .build();
 
-        commandHandler.register(new BaltopCMD(this));
-        commandHandler.registerBrigadier();
+        lamp.register(new BaltopCMD(this));
     }
 
 
