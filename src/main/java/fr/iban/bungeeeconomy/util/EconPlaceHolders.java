@@ -1,6 +1,7 @@
 package fr.iban.bungeeeconomy.util;
 
 import fr.iban.bungeeeconomy.BungeeEconomyPlugin;
+import fr.iban.bungeeeconomy.baltop.Baltop;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -42,6 +43,18 @@ public class EconPlaceHolders extends PlaceholderExpansion {
 
         if (identifier.equals("balance")) {
             return plugin.getEconomy().format(plugin.getEconomy().getBalance(player));
+        }
+
+        Baltop baltop = plugin.getEconomy().getBaltop();
+
+        for (int i = 0; i < baltop.getBaltopPlayers().size(); i++) {
+            if(identifier.equalsIgnoreCase("top_" + (i+1) + "_name")){
+                return baltop.getBaltopPlayers().get(i).getName();
+            }
+
+            if(identifier.equalsIgnoreCase("top_" + (i+1) + "_balance")){
+                return plugin.getEconomy().format(baltop.getBaltopPlayers().get(i).getBalance());
+            }
         }
 
         return null;

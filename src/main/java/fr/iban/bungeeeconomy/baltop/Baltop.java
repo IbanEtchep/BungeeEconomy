@@ -4,8 +4,8 @@ import java.util.List;
 
 public class Baltop {
 
-    private List<BaltopPlayer> baltopPlayers;
-    private long updatedAt;
+    private final List<BaltopPlayer> baltopPlayers;
+    private final long updatedAt;
 
     public Baltop(List<BaltopPlayer> baltop) {
         this.baltopPlayers = baltop;

@@ -2,8 +2,8 @@ package fr.iban.bungeeeconomy.baltop;
 
 public class BaltopPlayer {
 
-    private String name;
-    private double balance;
+    private final String name;
+    private final double balance;
 
     public BaltopPlayer(String name, double balance) {
         this.name = name;

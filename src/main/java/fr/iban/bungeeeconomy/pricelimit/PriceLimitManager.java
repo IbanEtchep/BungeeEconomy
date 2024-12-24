@@ -2,25 +2,22 @@ package fr.iban.bungeeeconomy.pricelimit;
 
 import fr.iban.bungeeeconomy.BungeeEconomyPlugin;
 import fr.iban.bungeeeconomy.sql.SqlStorage;
-import fr.iban.bungeeeconomy.util.SerializationUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
-import org.maxgamer.quickshop.api.QuickShopAPI;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 
 public class PriceLimitManager {
 
-    private SqlStorage sqlStorage;
-    private BungeeEconomyPlugin plugin;
+    private final SqlStorage sqlStorage;
+    private final BungeeEconomyPlugin plugin;
     private final Map<Material, PriceLimit> materialsPriceLimits = new HashMap<>();
     private final Map<Enchantment, PriceLimit> enchantsPriceLimits = new HashMap<>();
 

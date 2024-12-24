@@ -6,6 +6,7 @@ import fr.iban.bungeeeconomy.baltop.Baltop;
 import fr.iban.bungeeeconomy.baltop.BaltopPlayer;
 import fr.iban.bungeeeconomy.pricelimit.PriceLimit;
 import fr.iban.common.data.sql.DbAccess;
+import fr.iban.common.model.MSPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
@@ -96,7 +97,17 @@ public class SqlStorage {
                 while (rs.next()) {
                     UUID uuid = UUID.fromString(rs.getString("uuid"));
                     double balance = rs.getDouble("balance");
-                    String name = CoreBukkitPlugin.getInstance().getPlayerManager().getOfflinePlayer(uuid).getName();
+
+                    MSPlayer msPlayer = CoreBukkitPlugin.getInstance().getPlayerManager().getOfflinePlayer(uuid);
+
+                    String name;
+                    if(msPlayer != null) {
+                        name = msPlayer.getName();
+                    }else {
+                        OfflinePlayer offlinePlayer1 = Bukkit.getOfflinePlayer(uuid);
+                        name = offlinePlayer1.getName();
+                    }
+
                     baltopPlayerList.add(new BaltopPlayer(name, balance));
                 }
             }

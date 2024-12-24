@@ -42,6 +42,10 @@ public class EconomyImpl implements Economy {
                 e.printStackTrace();
             }
         });
+
+        Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, () -> {
+            baltop = sqlStorage.getBaltop();
+        }, 0, plugin.getConfig().getLong("baltop-update-interval") * 20 * 60);
     }
 
     @Override
@@ -317,15 +321,8 @@ public class EconomyImpl implements Economy {
         return createPlayerAccount(player);
     }
 
-    public CompletableFuture<Baltop> getBaltop() {
-        return CompletableFuture.supplyAsync(() -> {
-
-            if (baltop == null || baltop.getUpdatedAt() < System.currentTimeMillis() - plugin.getConfig().getInt("baltop-update-interval") * 60 * 1000L) {
-                baltop = sqlStorage.getBaltop();
-            }
-
-            return baltop;
-        });
+    public Baltop getBaltop() {
+        return baltop;
     }
 
     /**
